@@ -20,19 +20,19 @@ function ready( callback ) {
 
 function handleNavigation() {
 
-  const siteNavigation = document.getElementById('nav');
+  const siteNavigation = document.getElementById( 'nav' );
 
   if ( ! siteNavigation ) {
     return;
   }
 
-  const hamburger = document.getElementById('hamburger');
+  const hamburger = document.getElementById( 'hamburger' );
 
   if ( ! hamburger ) {
     return;
   }
 
-  const menu = siteNavigation.querySelectorAll('ul')[0];
+  const menu = siteNavigation.querySelectorAll( 'ul' )[0];
 
   if ( 'undefined' === typeof menu ) {
     return;
@@ -42,36 +42,52 @@ function handleNavigation() {
     menu.classList.add( 'nav-links' );
   }
 
-  const menuLinks = menu.querySelectorAll('a');
+  const menuLinks = menu.querySelectorAll( 'a' );
 
-  const parentItems = menu.querySelectorAll('.parent');
+  for (const link of menuLinks) {
+    link.addEventListener( 'focus', toggleFocus, true );
+    link.addEventListener( 'blur', toggleFocus, true );
+  }
+
+
+  const parentItems = menu.querySelectorAll( '.parent' );
 
   if ( ! parentItems ) {
     return;
   }
 
-  const linksWithChildren = menu.querySelectorAll('.parent > a');
+  const toggles = menu.querySelectorAll( '.sub-nav__toggle' );
 
-  for (const link of menuLinks) {
-    link.addEventListener('focus', toggleFocus, true);
-    link.addEventListener('blur', toggleFocus, true);
+  for (const link of toggles) {
+    link.addEventListener( 'click', toggleFocus, false );
+  }
+
+  const breakpoint = window.matchMedia( '(min-width: 992px)' );
+
+  const hoverIntentOpts = {
+    timeout: 300,
+    interval: 0,
   }
 
   for (const link of parentItems) {
-    link.addEventListener('touchstart', toggleFocus, false);
-    hoverintent(
+
+    const hoverListener = hoverintent(
       link,
       () => {
-        link.setAttribute('data-dropdown-open', 'true');
+        link.setAttribute( 'data-dropdown-open', 'true' );
       },
       () => {
-        link.setAttribute('data-dropdown-open', 'false');
+        link.setAttribute( 'data-dropdown-open', 'false' );
       }
-    );
-  }
+    ).options(hoverIntentOpts);
 
-  for (const link of linksWithChildren) {
-    link.addEventListener('touchstart', toggleFocus, false);
+    // const breakpointChecker = function() {
+    //   if ( breakpoint.matches === true ) {
+
+    //   } else if ( breakpoint.matches === false ) {
+    //     hoverListener.remove();
+    //   }
+    // }
   }
 
   function toggleFocus() {
@@ -92,28 +108,34 @@ function handleNavigation() {
       }
     }
 
-    if ( event.type === 'touchstart' ) {
+    // if ( event.type === 'touchstart' ) {
 
-      let menuItem = this.parentNode;
-      event.preventDefault();
+    //   let self = this;
+    //   event.preventDefault();
 
-      for ( const link of menuItem.parentNode.children ) {
+    //   // Move up through the ancestors of the current link until we hit .nav-links
+    //   while ( ! self.classList.contains( 'nav-links' ) ) {
 
-        if ( menuItem !== link ) {
-          link.classList.remove( 'focus' );
-        }
+    //     // On li elements toggle the class .focus
+    //     if ( 'li' === self.tagName.toLowerCase() ) {
+    //       self.classList.toggle( 'focus' );
+    //     }
+    //     self = self.parentNode;
+    //   }
+    // }
 
-      }
+    if ( event.type === 'click' ) {
 
-      menuItem.classList.toggle( 'focus' );
+      this.parentNode.classList.toggle( 'focus' );
 
     }
+
   }
 
-  hamburger.addEventListener('click', toggleMobileMenu);
+  hamburger.addEventListener( 'click', toggleMobileMenu );
 
   function toggleMobileMenu( event ) {
-    document.body.classList.toggle('menu-opened');
+    document.body.classList.toggle( 'menu-opened' );
 
     if ( hamburger.getAttribute( 'aria-expanded' ) === 'true' ) {
       hamburger.setAttribute( 'aria-expanded', 'false' );
@@ -123,7 +145,6 @@ function handleNavigation() {
   }
 
   // Remove .menu-opened from body and set aria-expanded to false when user clicks outside mobile nav
-  // TODO: add logic to close Sub Navs, too!
   document.addEventListener( 'click', function( event ) {
     const isClickInside = siteNavigation.contains( event.target );
 
@@ -141,32 +162,45 @@ function handleNavigation() {
   function scrollFunction() {
     setTimeout( function() {
       if (window.pageYOffset > 550) {
-        siteNavigation.classList.add('scrolled');
+        siteNavigation.classList.add( 'scrolled' );
       } else {
-        siteNavigation.classList.remove('scrolled');
+        siteNavigation.classList.remove( 'scrolled' );
       }
     }, 350);
   }
 }
 
-
-function classifyParentItems() {
-  const siteNavigation = document.getElementById('nav');
-  const allSubNavs = siteNavigation.querySelectorAll('.nav-item [role="list"]');
-
-  for (const subNav of allSubNavs) {
-    subNav.closest('.nav-item').classList.add('parent');
+function addSubNavToggles() {
+  const siteNavigation = document.getElementById( 'nav' );
+  const allParents = siteNavigation.querySelectorAll( '.parent' );
+  for (const parent of allParents) {
+    let toggle = document.createElement( 'div' );
+    let subNav = parent.querySelectorAll( '.sub-nav' )[0];
+    toggle.classList.add( 'sub-nav__toggle' );
+    parent.insertBefore( toggle, subNav );
   }
 }
 
 
+function classifyParentItems() {
+  const siteNavigation = document.getElementById( 'nav' );
+  const allSubNavs = siteNavigation.querySelectorAll( '.nav-item [role="list"]' );
+
+  for (const subNav of allSubNavs) {
+    subNav.closest( '.nav-item' ).classList.add( 'parent' );
+  }
+
+  addSubNavToggles();
+}
+
+
 function extendCurrentToParents() {
-  let currentNavItems = document.querySelectorAll('.sub-nav .w--current');
+  let currentNavItems = document.querySelectorAll( '.sub-nav .w--current' );
 
   for( let i=0; i < currentNavItems.length; i++) {
-    let parentItem = currentNavItems[i].closest('.nav-item');
+    let parentItem = currentNavItems[i].closest( '.nav-item' );
     let parentLink = parentItem.firstElementChild;
-    parentLink.classList.add("current");
+    parentLink.classList.add( 'current' );
   }
 }
 
@@ -177,8 +211,8 @@ var $buoop = {
   required: {e:-2,c: -20,f: -20,o: -20,o_a: -20,s: -20,y: -20,v: -20,uc: -20,ios: -20,samsung: -20},
   text: "You are using an outdated browser! Please update or switch to a different browser to view this site.",
   no_permanent_hide: true,
-    insecure: false,
-    unsupported: false,
+  insecure: false,
+  unsupported: false,
   reminder: 0,
   api: 2019.05,
 };
