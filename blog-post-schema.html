@@ -1,0 +1,43 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "image": "{{wf {&quot;path&quot;:&quot;featured-image&quot;,&quot;type&quot;:&quot;ImageRef&quot;\} }}",
+  "url": "https://risesc.org/news/{{wf {&quot;path&quot;:&quot;slug&quot;,&quot;type&quot;:&quot;PlainText&quot;\} }}",
+  "headline": "{{wf {&quot;path&quot;:&quot;name&quot;,&quot;type&quot;:&quot;PlainText&quot;\} }}",
+  "datePublished": "{{wf {&quot;path&quot;:&quot;post-date&quot;,&quot;transformers&quot;:[{&quot;name&quot;:&quot;date&quot;,&quot;arguments&quot;:[&quot;MMM DD, YYYY&quot;]\}],&quot;type&quot;:&quot;Date&quot;\} }}",
+  "dateModified": "{{wf {&quot;path&quot;:&quot;updated-on&quot;,&quot;transformers&quot;:[{&quot;name&quot;:&quot;date&quot;,&quot;arguments&quot;:[&quot;MMM DD, YYYY&quot;]\}],&quot;type&quot;:&quot;Date&quot;\} }}",
+  "description": "{{wf {&quot;path&quot;:&quot;short-description&quot;,&quot;type&quot;:&quot;PlainText&quot;\} }}",
+  "author": {
+    "@type": "Organization",
+    "name": "RISE Soccer Club"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "RISE Soccer Club",
+    "url": "https://risesc.org/",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://uploads-ssl.webflow.com/5eb043b98cf9c48746832cbb/5ec3f840f755f1731216519f_RISE-logo.svg"
+    }
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@id": "https://risesc.org/news",
+        "name": "News"
+      }
+    },{
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@id": "https://risesc.org/news/",
+        "name": ""
+      }
+    }]
+  }
+}
+</script>
