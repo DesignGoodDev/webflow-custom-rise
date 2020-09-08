@@ -8,6 +8,7 @@ ready( function() {
   classifyParentItems();
   handleNavigation();
   extendCurrentToParents();
+  //addScrollToTopButton();
 });
 
 function ready( callback ) {
@@ -181,7 +182,6 @@ function addSubNavToggles() {
   }
 }
 
-
 function classifyParentItems() {
   const siteNavigation = document.getElementById( 'nav' );
   const allSubNavs = siteNavigation.querySelectorAll( '.nav-item [role="list"]' );
@@ -193,7 +193,6 @@ function classifyParentItems() {
   addSubNavToggles();
 }
 
-
 function extendCurrentToParents() {
   let currentNavItems = document.querySelectorAll( '.sub-nav .w--current' );
 
@@ -204,6 +203,24 @@ function extendCurrentToParents() {
   }
 }
 
+function addScrollToTopButton() {
+  const img = document.createElement('img');
+
+  img.src = '//uploads-ssl.webflow.com/5eb043b98cf9c48746832cbb/5ef4d46efa65b49bd9402e0c_back-to-top-outlined.svg';
+
+  const b = document.createElement('a');
+
+  if ( ! document.body.id == 'top' ) {
+    document.body.id = 'top';
+  }
+
+  b.href = '#top';
+  b.setAttribute('style', 'position:fixed;bottom:10px;right:10px;');
+
+  b.append(img);
+
+  document.body.appendChild(b);
+}
 </script>
 
 <script>
