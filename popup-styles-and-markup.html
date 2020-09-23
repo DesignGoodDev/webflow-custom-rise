@@ -1,0 +1,52 @@
+<style>
+  .modal__list {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1000000;
+    width: 100%;
+    transition: all 350ms;
+  }
+  .modal__item {
+    text-align: center;
+    transition: all 350ms;
+    opacity: 0;
+    visibility: hidden;
+  }
+  .modal {
+    background-color: #96cfdc;
+    position: relative;
+    padding: 0 20px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2000000;
+  }
+  .modal__item:last-child .modal {
+    background-color: #D6226A;
+  }
+  .modal__item:last-child .w-button:hover {
+    background-color: #96cfdc;
+  }
+  .modal__item.opened {
+    opacity: 1;
+    visibility: visible;
+  }
+  .modal__close {
+    cursor: pointer;
+    margin-bottom: -10px;
+  }
+  @media (max-width: 767px) {
+    .modal__list {
+      flex-direction: column;
+    }
+  }
+</style>
+
+
+<!-- Modal Markup -->
+<div id="modal-{{ SLUG }}" class="modal">
+  <div class="modal__close">X</div>
+  <h5>{{ HEADING }}</h5>
+  <a href="{{ BUTTON-URL }}" class="w-button">{{ BUTTON-TEXT }}</a>
+</div>
