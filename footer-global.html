@@ -205,24 +205,34 @@ function extendCurrentToParents() {
 
 function addScrollToTopButton() {
   const img = document.createElement('img');
-
-  img.src = '//uploads-ssl.webflow.com/5eb043b98cf9c48746832cbb/5ef4d46efa65b49bd9402e0c_back-to-top-outlined.svg';
-
   const btn = document.createElement('a');
 
-  if ( ! document.body.id == 'top' ) {
-    document.body.id = 'top';
-  }
+  // build img
+  img.src = '//uploads-ssl.webflow.com/5eb043b98cf9c48746832cbb/5ef4d46efa65b49bd9402e0c_back-to-top-outlined.svg';
 
-  btn.href = '#top';
+  // build, style, position btn in corner, hidden for now
+  btn.href = '#';
+  btn.title = 'Back to top';
   btn.setAttribute('style', 'position:fixed;bottom:10px;right:10px;visibility:hidden;opacity:0;transition:all 250ms ease;');
 
+  // add img inside btn
   btn.append(img);
 
+  // add btn to bottom of Body
   document.body.appendChild(btn);
 
-  window.addEventListener('scroll', scrollFunctionButton);
+  // scroll up on click
+  btn.addEventListener( 'click', scrollMeUp );
+  function scrollMeUp() {
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }
 
+  // show btn when scroll past 1000px from top
+  window.addEventListener('scroll', scrollFunctionButton);
   function scrollFunctionButton() {
     setTimeout( function() {
       if ( window.pageYOffset > 1000 ) {
