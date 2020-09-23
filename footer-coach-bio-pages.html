@@ -1,0 +1,61 @@
+<script>
+ready( function() {
+  hideDirector();
+});
+
+function ready( callback ) {
+  if (document.readyState != 'loading') callback();
+  else if (document.addEventListener) document.addEventListener('DOMContentLoaded', callback);
+  else document.attachEvent('onreadystatechange', function() {
+    if (document.readyState == 'complete') callback();
+  });
+}
+
+// https://gist.github.com/codeguy/6684588
+function slugify(text) {
+  return text
+    .toString()                 // Cast to string
+    .toLowerCase()              // Convert the string to lowercase letters
+    .normalize('NFD')       		// The normalize() method returns the Unicode Normalization Form of a given string.
+    .trim()                     // Remove whitespace from both sides of a string
+    .replace(/\s+/g, '-')       // Replace spaces with -
+    .replace(/[^\w\-]+/g, '')   // Remove all non-word chars
+    .replace(/\-\-+/g, '-');    // Replace multiple - with single -
+}
+
+function hideDirector() {
+  // make sure we even have the expected list of coaches
+  const coachesCheck = document.querySelectorAll( '.coaches-wrap' ) !== null;
+  let topCoachesSection;
+  if ( coachesCheck === true ) {
+    // store the top section of the coaches list
+    topCoachesSection = document.querySelectorAll( '.coaches-wrap' )[0].firstElementChild;
+  } else {
+    // someone changed the class, trust no one, get out
+    return;
+  }
+
+  // find out which bio page we're on; store info
+  const pageSubjectCheck = document.querySelectorAll( '.coach__top-info' ) !== null;
+  let pageSubject;
+  if ( pageSubjectCheck ) {
+    pageSubject = slugify( document.querySelectorAll( '.coach__top-info .position' )[0].textContent );
+  } else {
+    return;
+  }
+  // find out what's in the first section; store info
+  const topSectionNodes = topCoachesSection.querySelectorAll( '.coaches' ).length;
+  // if there's more than one person, get out, but if there is only one
+  // AND if that person has the same job title as our bio subject's job title, proceed
+  if ( topSectionNodes === 1 ) {
+    const firstJobTitle = slugify( topCoachesSection.querySelectorAll( '.position' )[0].textContent );
+    if ( firstJobTitle === pageSubject ) {
+      topCoachesSection.setAttribute( 'style', 'display:none;' );
+    } else {
+      return;
+    }
+  } else {
+    return;
+  }
+}
+</script>
