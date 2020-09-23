@@ -246,7 +246,7 @@ function handleModals() {
     button.addEventListener( 'click', function() {
       modal.classList.remove( 'opened' );
       setTimeout( function() {
-        modal.setAttribute( 'style', 'display: none;')
+        modal.setAttribute( 'style', 'width:0;height:0;flex: 0 0 0;')
       }, 1000);
     });
   }

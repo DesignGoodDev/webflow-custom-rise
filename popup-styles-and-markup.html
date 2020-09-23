@@ -10,6 +10,9 @@
   .modal__item {
     text-align: center;
     transition: all 350ms;
+    width: 0;
+    height: 0;
+    flex: 0 0 0;
     opacity: 0;
     visibility: hidden;
   }
@@ -29,6 +32,9 @@
     background-color: #96cfdc;
   }
   .modal__item.opened {
+    flex: 1 1 auto;
+    width: auto;
+    height: auto;
     opacity: 1;
     visibility: visible;
   }
