@@ -1,12 +1,9 @@
-<script>
-  !function(e,t){if("function"==typeof define&&define.amd)define("hoverintent",["module"],t);else if("undefined"!=typeof exports)t(module);else{var n={exports:{}};t(n),e.hoverintent=n.exports}}(this,function(e){"use strict";var t=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var o in n)Object.prototype.hasOwnProperty.call(n,o)&&(e[o]=n[o])}return e};e.exports=function(e,n,o){function i(e,t){return y&&(y=clearTimeout(y)),b=0,p?void 0:o.call(e,t)}function r(e){m=e.clientX,d=e.clientY}function u(e,t){if(y&&(y=clearTimeout(y)),Math.abs(h-m)+Math.abs(E-d)<x.sensitivity)return b=1,p?void 0:n.call(e,t);h=m,E=d,y=setTimeout(function(){u(e,t)},x.interval)}function s(t){return L=!0,y&&(y=clearTimeout(y)),e.removeEventListener("mousemove",r,!1),1!==b&&(h=t.clientX,E=t.clientY,e.addEventListener("mousemove",r,!1),y=setTimeout(function(){u(e,t)},x.interval)),this}function c(t){return L=!1,y&&(y=clearTimeout(y)),e.removeEventListener("mousemove",r,!1),1===b&&(y=setTimeout(function(){i(e,t)},x.timeout)),this}function v(t){L||(p=!0,n.call(e,t))}function a(t){!L&&p&&(p=!1,o.call(e,t))}function f(){e.addEventListener("focus",v,!1),e.addEventListener("blur",a,!1)}function l(){e.removeEventListener("focus",v,!1),e.removeEventListener("blur",a,!1)}var m,d,h,E,L=!1,p=!1,T={},b=0,y=0,x={sensitivity:7,interval:100,timeout:0,handleFocus:!1};return T.options=function(e){var n=e.handleFocus!==x.handleFocus;return x=t({},x,e),n&&(x.handleFocus?f():l()),T},T.remove=function(){e&&(e.removeEventListener("mouseover",s,!1),e.removeEventListener("mouseout",c,!1),l())},e&&(e.addEventListener("mouseover",s,!1),e.addEventListener("mouseout",c,!1)),T}});
-  // hoverintent.min.js (via: https://github.com/tristen/hoverintent)
-</script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@2.2.1/src/js.cookie.min.js"></script>
 <script>
 ready( function() {
   classifyParentItems();
-  handleNavigation();
+  handleSubNavState();
+  handleMobileNavState();
   extendCurrentToParents();
   addScrollToTopButton();
   handleModals();
@@ -21,158 +18,106 @@ function ready( callback ) {
   });
 }
 
-function handleNavigation() {
+window.onscroll = function() {
+  scrollFunction();
+}
 
-  const siteNavigation = document.getElementById( 'nav' );
+window.onresize = function() {
+  handleSubNavState();
+}
 
-  if ( ! siteNavigation ) {
-    return;
-  }
+// global variables
+const siteNavigation = document.getElementById( 'nav' );
+const parentLinks = document.querySelectorAll( '.parent' );
+const navBreakpoint = window.matchMedia( '(min-width: 992px)' );
 
-  const hamburger = document.getElementById( 'hamburger' );
-
-  if ( ! hamburger ) {
-    return;
-  }
-
-  const menu = siteNavigation.querySelectorAll( 'ul' )[0];
-
-  if ( 'undefined' === typeof menu ) {
-    return;
-  }
-
-  if ( ! menu.classList.contains( 'nav-links' ) ) {
-    menu.classList.add( 'nav-links' );
-  }
-
-  const menuLinks = menu.querySelectorAll( 'a' );
-
-  for (const link of menuLinks) {
-    link.addEventListener( 'focus', toggleFocus, true );
-    link.addEventListener( 'blur', toggleFocus, true );
-  }
-
-
-  const parentItems = menu.querySelectorAll( '.parent' );
-
-  if ( ! parentItems ) {
-    return;
-  }
-
-  const toggles = menu.querySelectorAll( '.sub-nav__toggle' );
-
-  for (const link of toggles) {
-    link.addEventListener( 'click', toggleFocus, false );
-  }
-
-  const breakpoint = window.matchMedia( '(min-width: 992px)' );
-
-  const hoverIntentOpts = {
-    timeout: 300,
-    interval: 0,
-  }
-
-  for (const link of parentItems) {
-
-    const hoverListener = hoverintent(
-      link,
-      () => {
-        link.setAttribute( 'data-dropdown-open', 'true' );
-      },
-      () => {
-        link.setAttribute( 'data-dropdown-open', 'false' );
-      }
-    ).options(hoverIntentOpts);
-
-    // const breakpointChecker = function() {
-    //   if ( breakpoint.matches === true ) {
-
-    //   } else if ( breakpoint.matches === false ) {
-    //     hoverListener.remove();
-    //   }
-    // }
-  }
-
-  function toggleFocus() {
-    if ( event.type === 'focus' || event.type === 'blur' ) {
-
-      let self = this;
-
-      // Move up through the ancestors of the current link until we hit .nav-links
-      while ( ! self.classList.contains( 'nav-links' ) ) {
-
-        // On li elements toggle the class .focus
-        if ( 'li' === self.tagName.toLowerCase() ) {
-          self.classList.toggle( 'focus' );
-        }
-
-        self = self.parentNode;
-
-      }
-    }
-
-    // if ( event.type === 'touchstart' ) {
-
-    //   let self = this;
-    //   event.preventDefault();
-
-    //   // Move up through the ancestors of the current link until we hit .nav-links
-    //   while ( ! self.classList.contains( 'nav-links' ) ) {
-
-    //     // On li elements toggle the class .focus
-    //     if ( 'li' === self.tagName.toLowerCase() ) {
-    //       self.classList.toggle( 'focus' );
-    //     }
-    //     self = self.parentNode;
-    //   }
-    // }
-
-    if ( event.type === 'click' ) {
-
-      this.parentNode.classList.toggle( 'focus' );
-
-    }
-
-  }
-
-  hamburger.addEventListener( 'click', toggleMobileMenu );
-
-  function toggleMobileMenu( event ) {
-    document.body.classList.toggle( 'menu-opened' );
-
-    if ( hamburger.getAttribute( 'aria-expanded' ) === 'true' ) {
-      hamburger.setAttribute( 'aria-expanded', 'false' );
+function scrollFunction() {
+  setTimeout( function() {
+    if (window.pageYOffset > 550) {
+      siteNavigation.classList.add( 'scrolled' );
     } else {
-      hamburger.setAttribute( 'aria-expanded', 'true' );
+      siteNavigation.classList.remove( 'scrolled' );
+    }
+  }, 350);
+}
+
+// used by addCloseArea
+function removeCloseArea( event ) {
+  let thisCloseArea = event.target;
+  const allSubNavs = document.querySelectorAll( '.sub-nav' );
+  for ( let i = 0; i < allSubNavs.length; i++ ) {
+    let parentItem = allSubNavs[i].closest( '.nav-item' );
+    let parentLink = parentItem.firstElementChild;
+    parentLink.classList.remove( 'active' );
+    allSubNavs[i].classList.remove( 'open' );
+  }
+  thisCloseArea.remove();
+}
+
+// used by toggleSubNav
+function addCloseArea() {
+  const siteWrap = document.querySelectorAll('.site-wrap');
+  if ( ! siteWrap ) {
+    return;
+  }
+  let closeArea = document.createElement('div');
+  closeArea.classList.add('close-area');
+  siteWrap[0].insertBefore(closeArea, header);
+  closeArea.addEventListener('click', removeCloseArea);
+}
+
+// used by handleSubNavState
+function toggleSubNav( event ) {
+  const toggles = document.querySelectorAll( '.sub-nav__toggle' );
+  const closeArea = document.querySelectorAll('.close-area');
+  let thisSubNav = event.target.nextElementSibling;
+
+  for (let i=0; i < toggles.length; i++) {
+    //if a sub nav is open but is not the sub nav closest to the clicked toggle, close the sub nav
+    if (toggles[i].nextElementSibling.classList.contains('open') && toggles[i].nextElementSibling !== thisSubNav) {
+      toggles[i].nextElementSibling.classList.toggle('open');
+      toggles[i].classList.toggle('active');
+      // go ahead and remove all close areas
+      for (let i=0; i < closeArea.length; i++) {
+        closeArea[i].remove();
+      }
+      // dont return yet, allow the rest of the function to proceed
+    }
+    //if a sub nav is open and it IS the sub nav closest to the clicked toggle, close the sub nav
+      else if (toggles[i].nextElementSibling.classList.contains('open') && toggles[i].nextElementSibling == thisSubNav) {
+      toggles[i].nextElementSibling.classList.remove('open');
+      toggles[i].classList.remove('active');
+      // go ahead and remove all close areas
+      for (let i=0; i < closeArea.length; i++) {
+        closeArea[i].remove();
+      }
+      return;
     }
   }
+  // if the sub nav is NOT open yet, open it and add a close area
+  thisSubNav.classList.add('open');
+  event.target.classList.add('active');
+  addCloseArea();
+}
 
-  // Remove .menu-opened from body and set aria-expanded to false when user clicks outside mobile nav
-  document.addEventListener( 'click', function( event ) {
-    const isClickInside = siteNavigation.contains( event.target );
-
-    if ( ! isClickInside ) {
-      document.body.classList.remove( 'menu-opened' );
-      hamburger.setAttribute( 'aria-expanded', 'false' );
+function handleSubNavState() {
+  const allSubNavToggles = document.querySelectorAll( '.sub-nav__toggle' );
+  if ( navBreakpoint.matches === false ) {
+    // smaller than navBreakpoint
+    for (let i=0 ; i < allSubNavToggles.length; i++) {
+      allSubNavToggles[i].addEventListener('click', toggleSubNav);
     }
-  } );
-
-  // Add .scrolled after scroll past 550px
-  window.addEventListener('scroll', scrollFunction);
-
-  function scrollFunction() {
-    setTimeout( function() {
-      if (window.pageYOffset > 550) {
-        siteNavigation.classList.add( 'scrolled' );
-      } else {
-        siteNavigation.classList.remove( 'scrolled' );
-      }
-    }, 350);
+  }
+  else if ( navBreakpoint.matches === true) {
+    // larger than navBreakpoint
+    for (let i=0 ; i < allSubNavToggles.length; i++) {
+      allSubNavToggles[i].removeEventListener('click', toggleSubNav);
+    }
   }
 }
 
+// used by classifyParentItems
 function addSubNavToggles() {
-  const siteNavigation = document.getElementById( 'nav' );
   const allParents = siteNavigation.querySelectorAll( '.parent' );
   for (const parent of allParents) {
     let toggle = document.createElement( 'div' );
@@ -183,8 +128,7 @@ function addSubNavToggles() {
 }
 
 function classifyParentItems() {
-  const siteNavigation = document.getElementById( 'nav' );
-  const allSubNavs = siteNavigation.querySelectorAll( '.nav-item [role="list"]' );
+  const allSubNavs = siteNavigation.querySelectorAll( '.nav-item .sub-nav' );
 
   for (const subNav of allSubNavs) {
     subNav.closest( '.nav-item' ).classList.add( 'parent' );
@@ -201,6 +145,37 @@ function extendCurrentToParents() {
     let parentLink = parentItem.firstElementChild;
     parentLink.classList.add( 'current' );
   }
+}
+
+function handleMobileNavState() {
+  const hamburger = document.getElementById( 'hamburger' );
+
+  if ( ! hamburger ) {
+    return;
+  }
+
+  hamburger.addEventListener( 'click', toggleMobileMenu );
+
+  function toggleMobileMenu( event ) {
+    document.body.classList.toggle( 'menu-opened' );
+
+    if ( hamburger.getAttribute( 'aria-expanded' ) === 'true' ) {
+      hamburger.setAttribute( 'aria-expanded', 'false' );
+    } else {
+      hamburger.setAttribute( 'aria-expanded', 'true' );
+    }
+  }
+
+  // Remove .menu-opened from body and set aria-expanded to false
+  // when user clicks outside mobile nav
+  document.addEventListener( 'click', function( event ) {
+    const isClickInside = siteNavigation.contains( event.target );
+
+    if ( ! isClickInside ) {
+      document.body.classList.remove( 'menu-opened' );
+      hamburger.setAttribute( 'aria-expanded', 'false' );
+    }
+  } );
 }
 
 function addScrollToTopButton() {
