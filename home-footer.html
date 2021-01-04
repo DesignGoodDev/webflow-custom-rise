@@ -1,0 +1,40 @@
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+var Webflow = Webflow || [];
+Webflow.push(function () {
+  var swiperTournaments = new Swiper ('.swiper-container.swiper--tournaments', {
+  	speed: 400,
+    loop: true,
+    navigation: {
+      nextEl: '.swiper-button-next.tournaments-next',
+      prevEl: '.swiper-button-prev.tournaments-prev',
+    },
+    pagination: {
+      el: '.swiper-pagination.pagination--tournaments',
+      clickable: true,
+    },
+    autoplay: {
+      delay: 7000,
+      disableOnInteraction: false,
+    },
+  });
+});
+Webflow.push(function () {
+  var swiperSponsors = new Swiper ('.swiper-container.swiper--sponsors', {
+  	speed: 400,
+    loop: true,
+    navigation: {
+      nextEl: '.swiper-button-next.sponsors-next',
+      prevEl: '.swiper-button-prev.sponsors-prev',
+    },
+    pagination: {
+      el: '.swiper-pagination.pagination--sponsors',
+      clickable: true,
+    },
+    autoplay: {
+      delay: 7000,
+      disableOnInteraction: false,
+    },
+  });
+});
+</script>

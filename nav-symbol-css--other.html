@@ -1,0 +1,139 @@
+<style>
+.breadcrumbs__link::after {
+  content: ' >>';
+}
+
+.breadcrumbs__link:last-child::after {
+  display: none;
+}
+
+.blog-posts__landing .blog-post:first-of-type {
+  width: 100%;
+}
+
+.radio-input {
+  width: 9px;
+  height: 9px;
+  background-color: #fff;
+  border-radius: 0;
+  box-shadow:
+    0 0 0 2px #fff,
+    0 0 0 4px #202c49;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.radio-input:checked {
+  background-color: #d6226a;
+  outline: none;
+}
+
+.w-file-upload {
+  width: 100%;
+}
+
+.w-file-upload-default,
+.w-file-upload-success,
+.w-file-upload-uploading {
+  display: block;
+  width: 100%;
+  color: #202c49;
+}
+
+.w-file-upload-file,
+.w-file-upload-uploading-btn,
+.w-file-upload-label {
+  display: flex;
+  align-items: center;
+  color: #202c49;
+  font-weight: 500;
+  background-color: #fff;
+  border-color: #202c49;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 0;
+}
+
+.blog-posts__landing .blog-post:first-of-type .post-content {
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+@media (max-width: 767px) {
+  .blog-posts__landing .blog-post:first-of-type .post-content {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+.w-richtext figure {
+  max-width: 50%;
+}
+
+.w-richtext figure.w-richtext-align-floatright {
+  margin-left: 50px;
+}
+
+@media (max-width: 767px) {
+  .w-richtext figure {
+    max-width: 60%;
+  }
+
+  .w-richtext figure.w-richtext-align-floatright {
+    margin-left: 20px;
+  }
+}
+
+.calendar {
+  margin-bottom: 20px;
+}
+
+.calendar__headings {
+  display: flex;
+}
+
+.calendar__headings > * {
+  width: 50%;
+  margin-bottom: 10px;
+}
+
+.date {
+  display: flex;
+}
+
+.date:nth-of-type(even) {
+  background: #eee;
+}
+
+.date > div {
+  width: 50%;
+  padding: 4px;
+}
+
+.date > div:first-child {
+  font-weight: bold;
+}
+
+@media (max-width: 479px) {
+  .calendar__headings {
+    display: none;
+  }
+
+  .date {
+    display: block;
+  }
+
+  .date:nth-of-type(even) {
+    background: transparent;
+  }
+
+  .date > div {
+    width: auto;
+    padding: 0;
+  }
+
+  .date > div:nth-of-type(even) {
+    margin-bottom: 10px;
+  }
+}
+</style>

@@ -1,0 +1,83 @@
+<style>
+.coach__email {
+  display: flex;
+  flex: 0 0 46px;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  background: #dadf36;
+  border-radius: 50%;
+  opacity: 1;
+  transition: opacity 200ms ease;
+}
+
+.coach__email:hover {
+  opacity: 0.75;
+}
+
+.coach__details--over {
+  transition: bottom 200ms ease-in-out;
+}
+
+.coach:hover .coach__details--over {
+  bottom: 0;
+}
+
+.ribbon-heading {
+  position: absolute;
+  top: 0;
+  z-index: 0;
+  display: inline-block;
+  box-sizing: content-box;
+  width: auto;
+  height: auto;
+  padding-top: 0;
+  padding-bottom: 12%;
+  overflow: hidden;
+  text-align: center;
+  background-color: #d6226a;
+  background-clip: content-box;
+}
+
+.ribbon-heading.ribbon-heading--sky {
+  right: 20px;
+  background-color: #96cfdc;
+}
+
+.ribbon-heading::after {
+  position: absolute;
+  top: auto;
+  left: -6px;
+  z-index: -1;
+  width: 52%;
+  width: calc(50% + 12px);
+  padding-bottom: 22%;
+  background-color: inherit;
+  border: 1px solid inherit;
+  -webkit-transform: rotate(-12.5deg) skewX(65deg);
+  -ms-transform: rotate(-12.5deg) skewX(65deg);
+  transform: rotate(-12.5deg) skewX(65deg);
+  -webkit-transform-origin: 0 0;
+  -ms-transform-origin: 0 0;
+  transform-origin: 0 0;
+  content: '';
+}
+
+.ribbon-heading h3 {
+  padding: 18px 54px 0;
+  border: 1px solid #d6226a;
+}
+
+.ribbon-heading h5 {
+  padding: 12px 24px 0;
+  border: 1px solid #96cfdc;
+}
+
+@media (max-width: 767px) {
+  .ribbon-heading h3 {
+    padding: 14px 24px 0;
+    font-size: 14px;
+  }
+}
+</style>
