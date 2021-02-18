@@ -1,0 +1,43 @@
+<script>
+  function ready( callback ) {
+    if (document.readyState != 'loading') callback();
+    else if (document.addEventListener) document.addEventListener('DOMContentLoaded', callback);
+    else document.attachEvent('onreadystatechange', function() {
+      if (document.readyState == 'complete') callback();
+    });
+  }
+
+  ready( function() {
+    collectTooltipContent();
+    handleTooltipState();
+  });
+
+  function collectTooltipContent() {
+    // find all .map__marker
+    const markers = document.querySelectorAll('.map__marker');
+    // inside each marker...
+    for ( let i = 0; i < markers.length; i++ ) {
+      // find its .marker__tooltip
+      const tooltip = markers[i].querySelectorAll('.marker__tooltip')[0];
+      // find its .tooltip__richtext
+      const tooltipContent = markers[i].querySelectorAll('.tooltip__richtext')[0];
+      // and shove that inside its .marker__tooltip
+      tooltip.appendChild(tooltipContent);
+    }
+  }
+
+  function handleTooltipState() {
+    const markerImgs = document.querySelectorAll('.marker__position');
+    if ( ! markerImgs ) {
+      return;
+    }
+    for ( let i = 0; i < markerImgs.length; i++ ) {
+      markerImgs[i].addEventListener('click', markerListener);
+      // need to add logic for hiding/showing these so that only one is open at a time and clicking outside of tooltip closes it
+    }
+  }
+
+  function markerListener() {
+    this.classList.toggle( 'tooltip-opened' );
+  }
+</script>
